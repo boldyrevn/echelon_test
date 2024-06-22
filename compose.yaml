@@ -1,0 +1,17 @@
+name: echelon_app
+
+services:
+  redis:
+    image: redis:latest
+    ports:
+      - 6379:6379
+    networks:
+      - echelon_network
+    volumes:
+      - redis-data:/data
+
+volumes:
+  redis-data:
+
+networks:
+  echelon_network:

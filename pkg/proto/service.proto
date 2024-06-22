@@ -1,0 +1,26 @@
+syntax = "proto3";
+
+option go_package = "/proto";
+
+package thumb.proto;
+
+enum ThumbnailQuality {
+  LOW = 0;
+  MEDIUM = 1;
+  HIGH = 2;
+}
+
+message GetThumbnailRequest {
+  string video_id = 1;
+  ThumbnailQuality quality = 2;
+}
+
+message Thumbnail {
+  string video_id = 1;
+  bytes payload = 2;
+  ThumbnailQuality quality = 3;
+}
+
+service ThumbnailService {
+  rpc GetThumbnail (GetThumbnailRequest) returns (Thumbnail);
+}
