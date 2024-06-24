@@ -19,16 +19,20 @@ func saveImage(t *model.Thumbnail, dir string) error {
         return errors.New("payload must be not nil")
     }
 
-    fileName := fmt.Sprintf("%s_%s", t.VideoID, t.Quality)
-    file, err := os.OpenFile(path.Join(dir, fileName), os.O_CREATE|os.O_WRONLY, 0660)
+    file, err := os.OpenFile(path.Join(dir, GetImageName(t)), os.O_CREATE|os.O_WRONLY, 0660)
     if err != nil {
         return err
     }
 
+    _, err = file.Write(t.Payload)
     return err
 }
 
-func parseVideoID(videoURL string) (string, error) {
+func GetImageName(t *model.Thumbnail) string {
+    return fmt.Sprintf("%s_%s.jpg", t.VideoID, t.Quality)
+}
+
+func ParseVideoID(videoURL string) (string, error) {
     parsedURL, err := url.Parse(videoURL)
     if err != nil {
         return "", err
@@ -54,7 +58,6 @@ func DownloadFilesAsynchronously(
             return DownloadFiles(ctx, c, quality, dir, videoURL)
         })
     }
-
     return wg.Wait()
 }
 
@@ -70,7 +73,12 @@ func DownloadFiles(
         return err
     }
 
-    for _, videoID := range videoURLs {
+    for _, videoURL := range videoURLs {
+        videoID, err := ParseVideoID(videoURL)
+        if err != nil {
+            return fmt.Errorf("failed to parse video URL: %w", err)
+        }
+
         thumbProto, err := c.GetThumbnail(ctx, &proto.GetThumbnailRequest{
             VideoId: videoID,
             Quality: qualityProto,

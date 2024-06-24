@@ -14,10 +14,10 @@ import (
     "google.golang.org/grpc"
 )
 
-func init() {
-    _ = os.Setenv("REDIS_HOST", "localhost")
-    _ = os.Setenv("REDIS_PORT", "6379")
-}
+var (
+    host = os.Getenv("REDIS_HOST")
+    port = os.Getenv("REDIS_PORT")
+)
 
 func main() {
     lis, err := net.Listen("tcp", fmt.Sprintf(":%d", app.ServicePort))

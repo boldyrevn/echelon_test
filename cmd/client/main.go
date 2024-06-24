@@ -43,7 +43,7 @@ func main() {
         return
     }
 
-    grpcClient, err := grpc.NewClient("localhost:54320", grpc.WithTransportCredentials(insecure.NewCredentials()))
+    grpcClient, err := grpc.NewClient(*address, grpc.WithTransportCredentials(insecure.NewCredentials()))
     if err != nil {
         fmt.Printf("error occurred during client creation: %e\n", err)
         return

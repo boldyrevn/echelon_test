@@ -21,13 +21,13 @@ func ThumbnailQualityFromProto(q proto.ThumbnailQuality) (ThumbnailQuality, erro
 func ThumbnailQualityToProto(t ThumbnailQuality) (proto.ThumbnailQuality, error) {
     switch t {
     case LowQuality:
-        return proto.ThumbnailQuality_LOW, InvalidQualityError{}
+        return proto.ThumbnailQuality_LOW, nil
     case MediumQuality:
-        return proto.ThumbnailQuality_MEDIUM, InvalidQualityError{}
+        return proto.ThumbnailQuality_MEDIUM, nil
     case HighQuality:
-        return proto.ThumbnailQuality_HIGH, InvalidQualityError{}
+        return proto.ThumbnailQuality_HIGH, nil
     default:
-        return -1, nil
+        return -1, errors.New("invalid quality")
     }
 }
 
